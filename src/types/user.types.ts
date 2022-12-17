@@ -13,3 +13,7 @@ export type UserCreationAttributes = Optional<
 >;
 
 export interface RequestWithUserAttributes extends UserAttributes, Request {}
+
+export interface DecodedToken {
+  id: string;
+}

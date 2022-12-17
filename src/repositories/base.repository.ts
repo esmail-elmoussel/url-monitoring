@@ -1,6 +1,6 @@
 import sequelize from 'sequelize';
 
-abstract class BaseRepository<M extends sequelize.Model> {
+abstract class BaseRepository<M extends sequelize.Model, ModelAttributes> {
   protected model;
 
   constructor(model: sequelize.ModelStatic<M>) {
@@ -33,20 +33,10 @@ abstract class BaseRepository<M extends sequelize.Model> {
   }
 
   update(
-    values: {
-      [key in keyof sequelize.Attributes<M>]?:
-        | sequelize.Utils.Fn
-        | sequelize.Utils.Col
-        | sequelize.Utils.Literal
-        | sequelize.Attributes<M>[key]
-        | undefined;
-    },
-    options: Omit<
-      sequelize.UpdateOptions<sequelize.Attributes<M>>,
-      'returning'
-    > & { returning: true | (keyof sequelize.Attributes<M>)[] }
+    entity: Partial<ModelAttributes>,
+    options: sequelize.UpdateOptions<ModelAttributes>
   ) {
-    return this.model.update(values, options);
+    return this.model.update(entity, options);
   }
 
   delete(options: sequelize.DestroyOptions<sequelize.Attributes<M>>) {

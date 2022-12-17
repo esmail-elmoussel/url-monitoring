@@ -1,12 +1,12 @@
 // awilix has to be imported using require
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const awilix = require('awilix');
-import { AuthController } from './controllers';
+import { AuthController, UrlController } from './controllers';
 import { DatabaseLoader, ServerLoader } from './loaders';
-import { UserModel } from './models';
-import { UserRepository } from './repositories';
-import { routes, authRoutes } from './routes';
-import { AuthService, JwtService, MailService, OtpService } from './services';
+import { UrlModel, UserModel } from './models';
+import { UrlRepository, UserRepository } from './repositories';
+import { routes, authRoutes, urlRoutes } from './routes';
+import { AuthService, MailService, OtpService, UrlService } from './services';
 
 const container = awilix.createContainer();
 
@@ -18,25 +18,29 @@ container.register({
 container.register({
   routes: awilix.asFunction(routes).singleton(),
   authRoutes: awilix.asFunction(authRoutes).singleton(),
+  urlRoutes: awilix.asFunction(urlRoutes).singleton(),
 });
 
 container.register({
   authController: awilix.asClass(AuthController).singleton(),
+  urlController: awilix.asClass(UrlController).singleton(),
 });
 
 container.register({
   authService: awilix.asClass(AuthService).singleton(),
   mailService: awilix.asClass(MailService).singleton(),
   otpService: awilix.asClass(OtpService).singleton(),
-  jwtService: awilix.asClass(JwtService).singleton(),
+  urlService: awilix.asClass(UrlService).singleton(),
 });
 
 container.register({
   userRepository: awilix.asClass(UserRepository).singleton(),
+  urlRepository: awilix.asClass(UrlRepository).singleton(),
 });
 
 container.register({
   userModel: awilix.asValue(UserModel),
+  urlModel: awilix.asValue(UrlModel),
 });
 
 export { container };

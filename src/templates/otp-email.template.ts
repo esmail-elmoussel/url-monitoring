@@ -5,12 +5,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Simple Transactional Email</title>
     <style>
-      /* -------------------------------------
-          GLOBAL RESETS
-      ------------------------------------- */
-
-      /*All the styling goes here*/
-
       img {
         border: none;
         -ms-interpolation-mode: bicubic;
@@ -41,10 +35,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
         vertical-align: top;
       }
 
-      /* -------------------------------------
-          BODY & CONTAINER
-      ------------------------------------- */
-
       .body {
         background-color: #f6f6f6;
         width: 100%;
@@ -69,9 +59,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
         padding: 10px;
       }
 
-      /* -------------------------------------
-          HEADER, FOOTER, MAIN
-      ------------------------------------- */
       .main {
         background: #ffffff;
         border-radius: 3px;
@@ -103,9 +90,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
         text-align: center;
       }
 
-      /* -------------------------------------
-          TYPOGRAPHY
-      ------------------------------------- */
       h1,
       h2,
       h3,
@@ -146,9 +130,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
         text-decoration: underline;
       }
 
-      /* -------------------------------------
-          BUTTONS
-      ------------------------------------- */
       .btn {
         box-sizing: border-box;
         width: 100%;
@@ -190,9 +171,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
         color: #ffffff;
       }
 
-      /* -------------------------------------
-          OTHER STYLES THAT MIGHT BE USEFUL
-      ------------------------------------- */
       .last {
         margin-bottom: 0;
       }
@@ -248,9 +226,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
         margin: 20px 0;
       }
 
-      /* -------------------------------------
-          RESPONSIVE AND MOBILE FRIENDLY STYLES
-      ------------------------------------- */
       @media only screen and (max-width: 620px) {
         table.body h1 {
           font-size: 28px !important;
@@ -293,9 +268,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
         }
       }
 
-      /* -------------------------------------
-          PRESERVE THESE STYLES IN THE HEAD
-      ------------------------------------- */
       @media all {
         .ExternalClass {
           width: 100%;
@@ -335,10 +307,6 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
     </style>
   </head>
   <body>
-    <span class="preheader"
-      >This is preheader text. Some clients will show this text as a
-      preview.</span
-    >
     <table
       role="presentation"
       border="0"
@@ -350,9 +318,7 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
         <td>&nbsp;</td>
         <td class="container">
           <div class="content">
-            <!-- START CENTERED WHITE CONTAINER -->
             <table role="presentation" class="main">
-              <!-- START MAIN CONTENT AREA -->
               <tr>
                 <td class="wrapper">
                   <table
@@ -374,37 +340,7 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
                   </table>
                 </td>
               </tr>
-
-              <!-- END MAIN CONTENT AREA -->
             </table>
-            <!-- END CENTERED WHITE CONTAINER -->
-
-            <!-- START FOOTER -->
-            <div class="footer">
-              <table
-                role="presentation"
-                border="0"
-                cellpadding="0"
-                cellspacing="0"
-              >
-                <tr>
-                  <td class="content-block">
-                    <span class="apple-link"
-                      >Company Inc, 3 Abbey Road, San Francisco CA 94102</span
-                    >
-                    <br />
-                    Don't like these emails?
-                    <a href="http://i.imgur.com/CScmqnj.gif">Unsubscribe</a>.
-                  </td>
-                </tr>
-                <tr>
-                  <td class="content-block powered-by">
-                    Powered by <a href="http://htmlemail.io">HTMLemail</a>.
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <!-- END FOOTER -->
           </div>
         </td>
         <td>&nbsp;</td>

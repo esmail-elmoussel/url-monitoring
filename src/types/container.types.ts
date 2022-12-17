@@ -1,11 +1,11 @@
 import sequelize from 'sequelize';
 import { config } from '../config';
-import { AuthController } from '../controllers';
+import { AuthController, UrlController } from '../controllers';
 import { DatabaseLoader, ServerLoader } from '../loaders';
-import { UserModel } from '../models';
-import { UserRepository } from '../repositories';
-import { routes, authRoutes } from '../routes';
-import { AuthService, JwtService, MailService, OtpService } from '../services';
+import { UrlModel, UserModel } from '../models';
+import { UrlRepository, UserRepository } from '../repositories';
+import { routes, authRoutes, urlRoutes } from '../routes';
+import { AuthService, MailService, OtpService, UrlService } from '../services';
 
 export interface Dependencies {
   serverLoader: ServerLoader;
@@ -14,15 +14,19 @@ export interface Dependencies {
 
   routes: typeof routes;
   authRoutes: typeof authRoutes;
+  urlRoutes: typeof urlRoutes;
 
   authController: AuthController;
+  urlController: UrlController;
 
   authService: AuthService;
   mailService: MailService;
   otpService: OtpService;
-  jwtService: JwtService;
+  urlService: UrlService;
 
   userRepository: UserRepository;
+  urlRepository: UrlRepository;
 
   userModel: sequelize.ModelStatic<UserModel>;
+  urlModel: sequelize.ModelStatic<UrlModel>;
 }

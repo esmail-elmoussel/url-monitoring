@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import { config } from '../config';
 import { otpEmailTemplate } from '../templates/otp-email.template';
 import { Dependencies } from '../types/container.types';
 
@@ -6,18 +8,11 @@ export class AuthController {
   private readonly service;
   private readonly mailService;
   private readonly otpService;
-  private readonly jwtService;
 
-  constructor({
-    authService,
-    mailService,
-    otpService,
-    jwtService,
-  }: Dependencies) {
+  constructor({ authService, mailService, otpService }: Dependencies) {
     this.service = authService;
     this.mailService = mailService;
     this.otpService = otpService;
-    this.jwtService = jwtService;
   }
 
   sendOtp = async (req: Request, res: Response) => {
@@ -45,7 +40,7 @@ export class AuthController {
 
     const user = await this.service.findOrCreateUser(email);
 
-    const token = this.jwtService.generateToken(user.toJSON().id);
+    const token = jwt.sign({ id: user.toJSON().id }, config.JWT_SECRET);
 
     return res.json({ user, token });
   };
