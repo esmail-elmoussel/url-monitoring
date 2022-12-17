@@ -1,4 +1,5 @@
 import { Optional } from 'sequelize';
+import { UserAttributes } from './user.types';
 
 export enum UrlStatuses {
   Up = 'up',
@@ -14,6 +15,7 @@ export enum Protocols {
 export type UrlAttributes = {
   id: string;
   userId: string;
+  user?: UserAttributes;
   status: UrlStatuses;
   name: string;
   baseUrl: string;

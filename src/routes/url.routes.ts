@@ -25,7 +25,7 @@ export function urlRoutes({ urlController }: Dependencies) {
       source: 'params',
     }),
     checkSchemaMiddleware({
-      schema: urlDto.create,
+      schema: urlDto.edit,
       source: 'body',
     }),
     urlController.edit

@@ -10,7 +10,13 @@ import {
   UserRepository,
 } from './repositories';
 import { routes, authRoutes, urlRoutes } from './routes';
-import { AuthService, MailService, OtpService, UrlService } from './services';
+import {
+  AuthService,
+  MailService,
+  OtpService,
+  PollRequestService,
+  UrlService,
+} from './services';
 
 const container = awilix.createContainer();
 
@@ -35,6 +41,7 @@ container.register({
   mailService: awilix.asClass(MailService).singleton(),
   otpService: awilix.asClass(OtpService).singleton(),
   urlService: awilix.asClass(UrlService).singleton(),
+  pollRequestService: awilix.asClass(PollRequestService).singleton(),
 });
 
 container.register({

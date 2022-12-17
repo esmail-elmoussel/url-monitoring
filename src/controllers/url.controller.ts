@@ -4,6 +4,7 @@ import { UrlCreationDto } from '../types/url.types';
 
 export class UrlController {
   urlService;
+
   constructor({ urlService }: Dependencies) {
     this.urlService = urlService;
   }

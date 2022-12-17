@@ -6,7 +6,19 @@ const create = Joi.object({
   path: Joi.string(),
   port: Joi.number(),
   webhookUrl: Joi.string(),
-  timeout: Joi.number(),
+  timeout: Joi.number().integer().min(1),
+  interval: Joi.number(),
+  threshold: Joi.number(),
+  ignoreSSL: Joi.boolean(),
+}).required();
+
+const edit = Joi.object({
+  name: Joi.string(),
+  baseUrl: Joi.string().uri(),
+  path: Joi.string(),
+  port: Joi.number(),
+  webhookUrl: Joi.string(),
+  timeout: Joi.number().integer().min(1),
   interval: Joi.number(),
   threshold: Joi.number(),
   ignoreSSL: Joi.boolean(),
@@ -18,5 +30,6 @@ const params = Joi.object({
 
 export const urlDto = {
   create,
+  edit,
   params,
 };

@@ -9,7 +9,13 @@ import {
   UserRepository,
 } from '../repositories';
 import { routes, authRoutes, urlRoutes } from '../routes';
-import { AuthService, MailService, OtpService, UrlService } from '../services';
+import {
+  AuthService,
+  MailService,
+  OtpService,
+  PollRequestService,
+  UrlService,
+} from '../services';
 
 export interface Dependencies {
   serverLoader: ServerLoader;
@@ -27,6 +33,7 @@ export interface Dependencies {
   mailService: MailService;
   otpService: OtpService;
   urlService: UrlService;
+  pollRequestService: PollRequestService;
 
   userRepository: UserRepository;
   urlRepository: UrlRepository;

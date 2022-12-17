@@ -1,4 +1,6 @@
-export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
+import { UrlAttributes, UrlStatuses } from '../types/url.types';
+
+export const urlStatusEmailTemplate = (url: UrlAttributes) => `<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -329,9 +331,17 @@ export const otpEmailTemplate = (otp: string) => `<!DOCTYPE html>
                       <td>
                         <p>Hi there,</p>
                         <p>
-                          Your OTP verification code is: ${otp} 
+                          Your URL is <b>${
+                            url.status === UrlStatuses.Up ? 'up' : 'down'
+                          }</b> again!
                         </p>
-                        <p>If you did not request it or do not recognize this email you can ignore it safely.</p>
+
+                        <p>ID: ${url.id}</p>
+                        <p>Name: ${url.name}</p>
+                        <p>Base URL: ${url.baseUrl}</p>
+                        <p>Failure Count: ${url.failureCount}</p>
+                        <p>Date: ${url.updatedAt}</p>
+
                         <p>Thank you</p>
                       </td>
                     </tr>
