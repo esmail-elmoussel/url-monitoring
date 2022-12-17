@@ -1,20 +1,13 @@
-import { Sequelize } from 'sequelize';
-import { Dependencies } from '../types/container.types';
+import { sequelize } from '../utils/sequelize.util';
 
 export class DatabaseLoader {
-  private readonly config;
-  constructor({ config }: Dependencies) {
-    this.config = config;
-  }
-
   connect = async () => {
-    const db = new Sequelize(this.config.DATABASE_CONNECTION_STRING);
-
     try {
-      await db.authenticate();
+      await sequelize.sync({ alter: true }); // TODO: to be removed for production environment and adding migrations
+      await sequelize.authenticate();
       console.log('Database connected successfully!');
     } catch (error) {
-      console.error('Unable to connect to the database: ', error);
+      console.error('Unable to connect to the database!');
 
       throw error;
     }
