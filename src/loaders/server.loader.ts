@@ -8,9 +8,11 @@ export class ServerLoader {
   app = express();
 
   private readonly routes;
+  private readonly urlService;
 
-  constructor({ routes }: Dependencies) {
+  constructor({ routes, urlService }: Dependencies) {
     this.routes = routes;
+    this.urlService = urlService;
   }
 
   start = () => {
@@ -28,6 +30,8 @@ export class ServerLoader {
 
     this.app.listen(config.PORT, () => {
       console.log(`App listening to port ${config.PORT}`);
+
+      this.urlService.runJobsForAllExistingUrls();
     });
   };
 }

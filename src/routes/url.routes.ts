@@ -42,7 +42,7 @@ export function urlRoutes({ urlController }: Dependencies) {
     urlController.delete
   );
 
-  router.get('/', authenticationMiddleware, urlController.findAll);
+  router.get('/', authenticationMiddleware, urlController.findUserUrls);
 
   return router;
 }

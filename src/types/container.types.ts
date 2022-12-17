@@ -11,6 +11,7 @@ import {
 import { routes, authRoutes, urlRoutes } from '../routes';
 import {
   AuthService,
+  CronService,
   MailService,
   OtpService,
   PollRequestService,
@@ -34,6 +35,7 @@ export interface Dependencies {
   otpService: OtpService;
   urlService: UrlService;
   pollRequestService: PollRequestService;
+  cronService: CronService;
 
   userRepository: UserRepository;
   urlRepository: UrlRepository;

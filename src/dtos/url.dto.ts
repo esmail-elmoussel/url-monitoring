@@ -7,7 +7,7 @@ const create = Joi.object({
   port: Joi.number(),
   webhookUrl: Joi.string(),
   timeout: Joi.number().integer().min(1),
-  interval: Joi.number(),
+  interval: Joi.number().min(5).max(3600),
   threshold: Joi.number(),
   ignoreSSL: Joi.boolean(),
 }).required();
@@ -19,7 +19,7 @@ const edit = Joi.object({
   port: Joi.number(),
   webhookUrl: Joi.string(),
   timeout: Joi.number().integer().min(1),
-  interval: Joi.number(),
+  interval: Joi.number().min(5).max(3600),
   threshold: Joi.number(),
   ignoreSSL: Joi.boolean(),
 }).required();

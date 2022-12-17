@@ -12,6 +12,7 @@ import {
 import { routes, authRoutes, urlRoutes } from './routes';
 import {
   AuthService,
+  CronService,
   MailService,
   OtpService,
   PollRequestService,
@@ -42,6 +43,7 @@ container.register({
   otpService: awilix.asClass(OtpService).singleton(),
   urlService: awilix.asClass(UrlService).singleton(),
   pollRequestService: awilix.asClass(PollRequestService).singleton(),
+  cronService: awilix.asClass(CronService).singleton(),
 });
 
 container.register({

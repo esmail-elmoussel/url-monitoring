@@ -332,8 +332,8 @@ export const urlStatusEmailTemplate = (url: UrlAttributes) => `<!DOCTYPE html>
                         <p>Hi there,</p>
                         <p>
                           Your URL is <b>${
-                            url.status === UrlStatuses.Up ? 'up' : 'down'
-                          }</b> again!
+                            url.status === UrlStatuses.Up ? 'up again' : 'down'
+                          }</b>!
                         </p>
 
                         <p>ID: ${url.id}</p>

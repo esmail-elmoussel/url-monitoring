@@ -42,10 +42,10 @@ export class UrlController {
     return res.end();
   };
 
-  findAll = async (req: Request, res: Response) => {
+  findUserUrls = async (req: Request, res: Response) => {
     const userId = req.currentUser!.id;
 
-    const urls = await this.urlService.findAll(userId);
+    const urls = await this.urlService.findUserUrls(userId);
 
     return res.json(urls);
   };
