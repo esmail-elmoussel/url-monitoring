@@ -1,7 +1,7 @@
 // awilix has to be imported using require
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const awilix = require('awilix');
-import { AuthController, UrlController } from './controllers';
+import { AuthController, ReportController, UrlController } from './controllers';
 import { DatabaseLoader, ServerLoader } from './loaders';
 import { PollRequestModel, UrlModel, UserModel } from './models';
 import {
@@ -9,13 +9,14 @@ import {
   UrlRepository,
   UserRepository,
 } from './repositories';
-import { routes, authRoutes, urlRoutes } from './routes';
+import { routes, authRoutes, urlRoutes, reportRoutes } from './routes';
 import {
   AuthService,
   CronService,
   MailService,
   OtpService,
   PollRequestService,
+  ReportService,
   UrlService,
 } from './services';
 
@@ -30,11 +31,13 @@ container.register({
   routes: awilix.asFunction(routes).singleton(),
   authRoutes: awilix.asFunction(authRoutes).singleton(),
   urlRoutes: awilix.asFunction(urlRoutes).singleton(),
+  reportRoutes: awilix.asFunction(reportRoutes).singleton(),
 });
 
 container.register({
   authController: awilix.asClass(AuthController).singleton(),
   urlController: awilix.asClass(UrlController).singleton(),
+  reportController: awilix.asClass(ReportController).singleton(),
 });
 
 container.register({
@@ -44,6 +47,7 @@ container.register({
   urlService: awilix.asClass(UrlService).singleton(),
   pollRequestService: awilix.asClass(PollRequestService).singleton(),
   cronService: awilix.asClass(CronService).singleton(),
+  reportService: awilix.asClass(ReportService).singleton(),
 });
 
 container.register({

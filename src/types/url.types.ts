@@ -1,4 +1,5 @@
 import { Optional } from 'sequelize';
+import { PollRequestAttributes } from './poll-request.types';
 import { UserAttributes } from './user.types';
 
 export enum UrlStatuses {
@@ -30,6 +31,7 @@ export type UrlAttributes = {
   ignoreSSL?: boolean;
   createdAt: Date;
   updatedAt: Date;
+  pollRequests?: PollRequestAttributes[];
 };
 
 export type UrlCreationAttributes = Optional<
