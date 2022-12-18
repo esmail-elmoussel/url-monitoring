@@ -29,17 +29,17 @@ export class CronService {
 
   convertSecondsToCron = (seconds: number) => {
     if (seconds < 60) {
-      return `*/${seconds} * * * * *`;
+      return `*/${Math.floor(seconds)} * * * * *`;
     }
 
     const minutes = seconds / 60;
     if (minutes < 60) {
-      return `0 */${minutes} * * * *`;
+      return `0 */${Math.floor(minutes)} * * * *`;
     }
 
     const hours = minutes / 60;
     if (hours < 24) {
-      return `0 0 */${hours} * * *`;
+      return `0 0 */${Math.floor(hours)} * * *`;
     }
 
     throw new Error('Not supported!');

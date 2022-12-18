@@ -27,7 +27,10 @@ export class MailService {
     try {
       return await this.transporter.sendMail(body);
     } catch (err) {
-      console.error('Could not send email with body: ', JSON.stringify(body));
+      console.error(
+        'Could not send email with body: ',
+        JSON.stringify({ ...body, html: undefined })
+      );
 
       throw err;
     }

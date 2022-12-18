@@ -1,9 +1,17 @@
 import dotenv from 'dotenv';
 
-dotenv.config();
+if (process.env.NODE_ENV === 'test') {
+  dotenv.config({ path: __dirname + '/./../../.env.test' });
+} else {
+  dotenv.config({ path: __dirname + '/./../../.env' });
+}
 
 if (!process.env.DATABASE_URL) {
   throw new Error('missing environment variable "DATABASE_URL"');
+}
+
+if (!process.env.PORT) {
+  throw new Error('missing environment variable "PORT"');
 }
 
 if (!process.env.EMAIL) {
@@ -23,7 +31,7 @@ if (!process.env.JWT_SECRET) {
 }
 
 export const config = {
-  PORT: 3000,
+  PORT: process.env.PORT,
   DATABASE_URL: process.env.DATABASE_URL,
   EMAIL: process.env.EMAIL,
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,

@@ -2,7 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const awilix = require('awilix');
 import { AuthController, ReportController, UrlController } from './controllers';
-import { DatabaseLoader, ServerLoader } from './loaders';
+import { DatabaseLoader, AppLoader } from './loaders';
 import { PollRequestModel, UrlModel, UserModel } from './models';
 import {
   PollRequestRepository,
@@ -23,7 +23,7 @@ import {
 const container = awilix.createContainer();
 
 container.register({
-  serverLoader: awilix.asClass(ServerLoader).singleton(),
+  appLoader: awilix.asClass(AppLoader).singleton(),
   databaseLoader: awilix.asClass(DatabaseLoader).singleton(),
 });
 

@@ -1,13 +1,17 @@
 import { container } from './container';
-import { DatabaseLoader, ServerLoader } from './loaders';
+import { DatabaseLoader, AppLoader } from './loaders';
+import { UrlService } from './services';
 
-const serverLoader = container.resolve('serverLoader') as ServerLoader;
+const appLoader = container.resolve('appLoader') as AppLoader;
 const databaseLoader = container.resolve('databaseLoader') as DatabaseLoader;
+const urlService = container.resolve('urlService') as UrlService;
 
-const start = async () => {
+export const startServer = async () => {
   await databaseLoader.connect();
 
-  await serverLoader.start();
+  appLoader.listen();
+
+  urlService.runJobsForAllExistingUrls();
 };
 
-start();
+startServer();

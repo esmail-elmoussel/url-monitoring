@@ -5,7 +5,7 @@ import {
   ReportController,
   UrlController,
 } from '../controllers';
-import { DatabaseLoader, ServerLoader } from '../loaders';
+import { DatabaseLoader, AppLoader } from '../loaders';
 import { PollRequestModel, UrlModel, UserModel } from '../models';
 import {
   PollRequestRepository,
@@ -24,7 +24,7 @@ import {
 } from '../services';
 
 export interface Dependencies {
-  serverLoader: ServerLoader;
+  appLoader: AppLoader;
   databaseLoader: DatabaseLoader;
   config: typeof config;
 
