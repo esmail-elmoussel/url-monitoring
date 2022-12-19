@@ -90,6 +90,21 @@ UrlModel.init(
       type: Sequelize.BOOLEAN,
     },
 
+    authentication: {
+      field: 'authentication',
+      type: Sequelize.JSONB,
+    },
+
+    httpHeaders: {
+      field: 'httpHeaders',
+      type: Sequelize.JSONB,
+    },
+
+    assert: {
+      field: 'assert',
+      type: Sequelize.JSONB,
+    },
+
     createdAt: {
       field: 'created_at',
       type: Sequelize.DATE,

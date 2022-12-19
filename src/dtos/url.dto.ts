@@ -10,6 +10,14 @@ const create = Joi.object({
   interval: Joi.number().min(5).max(3600),
   threshold: Joi.number(),
   ignoreSSL: Joi.boolean(),
+  authentication: Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+  }),
+  httpHeaders: Joi.object(),
+  assert: Joi.object({
+    statusCode: Joi.number().required(),
+  }),
 }).required();
 
 const edit = Joi.object({
@@ -22,6 +30,14 @@ const edit = Joi.object({
   interval: Joi.number().min(5).max(3600),
   threshold: Joi.number(),
   ignoreSSL: Joi.boolean(),
+  authentication: Joi.object({
+    username: Joi.string(),
+    password: Joi.string(),
+  }),
+  httpHeaders: Joi.object(),
+  assert: Joi.object({
+    statusCode: Joi.number().required(),
+  }),
 }).required();
 
 const params = Joi.object({

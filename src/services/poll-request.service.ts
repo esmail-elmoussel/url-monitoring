@@ -45,9 +45,15 @@ export class PollRequestService {
       ? currentUrl.toJSON().baseUrl + currentUrl.toJSON().path
       : currentUrl.toJSON().baseUrl;
 
+    const authenticationHeader = currentUrl.toJSON().authentication || {};
+    const requestHeaders = currentUrl.toJSON().httpHeaders || {};
+
+    const headers = { ...authenticationHeader, ...requestHeaders };
+
     try {
       const newPollRequest: PollRequestCreationAttributes = await axios
         .get(urlPath, {
+          headers,
           timeout: currentUrl.toJSON().timeout * 1000,
         })
         .then(async (response) => {

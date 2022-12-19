@@ -32,6 +32,16 @@ export type UrlAttributes = {
   createdAt: Date;
   updatedAt: Date;
   pollRequests?: PollRequestAttributes[];
+  authentication?: {
+    username: string;
+    password: string;
+  };
+  httpHeaders?: {
+    [key: string]: string;
+  };
+  assert?: {
+    statusCode: number;
+  };
 };
 
 export type UrlCreationAttributes = Optional<
@@ -57,4 +67,14 @@ export interface UrlCreationDto {
   interval?: number;
   threshold?: number;
   ignoreSSL?: boolean;
+  authentication?: {
+    username: string;
+    password: string;
+  };
+  httpHeaders?: {
+    [key: string]: string;
+  };
+  assert?: {
+    statusCode: number;
+  };
 }
