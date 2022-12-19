@@ -2,6 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const awilix = require('awilix');
 import { AuthController, ReportController, UrlController } from './controllers';
+import { PushoverIntegration } from './integrations';
 import { DatabaseLoader, AppLoader } from './loaders';
 import { PollRequestModel, UrlModel, UserModel } from './models';
 import {
@@ -50,6 +51,10 @@ container.register({
   cronService: awilix.asClass(CronService).singleton(),
   reportService: awilix.asClass(ReportService).singleton(),
   notificationService: awilix.asClass(NotificationService).singleton(),
+});
+
+container.register({
+  pushoverIntegration: awilix.asClass(PushoverIntegration).singleton(),
 });
 
 container.register({

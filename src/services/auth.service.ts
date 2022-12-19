@@ -7,7 +7,7 @@ export class AuthService {
     this.userRepository = userRepository;
   }
 
-  findOrCreateUser = async (email: string) => {
+  findOrCreateUser = async (email: string, pushoverId?: string) => {
     const existingUser = await this.userRepository.findOne({
       where: { email },
     });
@@ -16,7 +16,7 @@ export class AuthService {
       return existingUser;
     }
 
-    const newUser = await this.userRepository.create({ email });
+    const newUser = await this.userRepository.create({ email, pushoverId });
 
     return newUser;
   };

@@ -38,11 +38,10 @@ export class UrlService {
   };
 
   create = async (url: UrlCreationDto, userId: string) => {
-    const protocol = url.baseUrl.includes('https')
-      ? Protocols.Https
-      : url.baseUrl.includes('http')
-      ? Protocols.Http
-      : Protocols.Tcp;
+    const protocol = new URL(url.baseUrl).protocol.replace(
+      ':',
+      ''
+    ) as Protocols;
 
     const urlToBeCreated: UrlCreationAttributes = {
       ...url,

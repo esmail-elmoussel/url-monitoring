@@ -20,6 +20,11 @@ UserModel.init(
       allowNull: false,
     },
 
+    pushoverId: {
+      field: 'pushover_id',
+      type: Sequelize.STRING,
+    },
+
     createdAt: {
       field: 'created_at',
       type: Sequelize.DATE,

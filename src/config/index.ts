@@ -30,6 +30,10 @@ if (!process.env.JWT_SECRET) {
   throw new Error('missing environment variable "JWT_SECRET"');
 }
 
+if (!process.env.PUSHOVER_TOKEN) {
+  throw new Error('missing environment variable "PUSHOVER_TOKEN"');
+}
+
 export const config = {
   NODE_ENV: process.env.PORT,
   PORT: process.env.PORT,
@@ -38,4 +42,5 @@ export const config = {
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
   OTP_SECRET: process.env.OTP_SECRET,
   JWT_SECRET: process.env.JWT_SECRET,
+  PUSHOVER_TOKEN: process.env.PUSHOVER_TOKEN,
 };

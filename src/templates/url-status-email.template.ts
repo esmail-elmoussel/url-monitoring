@@ -374,3 +374,18 @@ export const urlStatusEmailTemplate = (url: UrlAttributes) => `<!DOCTYPE html>
   </body>
 </html>
 `;
+
+export const urlStatusPushoverTemplate = (url: UrlAttributes) => `<div>
+<p>Hi there,</p>
+<p>
+  Your URL is <b>${url.status === UrlStatuses.Up ? 'up again' : 'down'}</b>!
+</p>
+
+<p>ID: ${url.id}</p>
+<p>Name: ${url.name}</p>
+<p>Base URL: ${url.baseUrl}${url.path ? url.path : ''}</p>
+<p>Failure Count: ${url.failureCount}</p>
+<p>Date: ${url.updatedAt}</p>
+
+<p>Thank you</p>
+</div>`;

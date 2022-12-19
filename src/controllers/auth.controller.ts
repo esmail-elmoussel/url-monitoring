@@ -30,15 +30,16 @@ export class AuthController {
   };
 
   verifyOtp = async (req: Request, res: Response) => {
-    const { email, otpHash, code } = req.body as {
+    const { email, otpHash, code, pushoverId } = req.body as {
       email: string;
       otpHash: string;
       code: string;
+      pushoverId?: string;
     };
 
     await this.otpService.verifyOtp(email, code, otpHash);
 
-    const user = await this.service.findOrCreateUser(email);
+    const user = await this.service.findOrCreateUser(email, pushoverId);
 
     const token = jwt.sign({ id: user.toJSON().id }, config.JWT_SECRET);
 

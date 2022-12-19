@@ -3,6 +3,7 @@ import { Optional } from 'sequelize';
 export type UserAttributes = {
   id: string;
   email: string;
+  pushoverId?: string;
   createdAt: Date;
   updatedAt: Date;
 };

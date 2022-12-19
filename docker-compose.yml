@@ -18,13 +18,14 @@ services:
     ports:
       - "3000:3000"
     environment:
-      # these values should not be exposed, keept it to ease testing!
+      # these values should NEVER be exposed, but I keept it to ease testing!
       PORT: 3000
       DATABASE_URL: "postgres://postgres:postgres@db:5432/postgres"
       EMAIL: "bosta.url.monitoring@gmail.com" 
       EMAIL_PASSWORD: "gwuofriuhhvldzqh"
       OTP_SECRET: "asjkdasjadn"
       JWT_SECRET: "ha2klsjskd8da7sd"
+      PUSHOVER_TOKEN: "a6g5po7d76tj1q9qba8z6gargb6zrs"
     links:
       - db
     volumes:

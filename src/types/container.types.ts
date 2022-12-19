@@ -5,6 +5,7 @@ import {
   ReportController,
   UrlController,
 } from '../controllers';
+import { PushoverIntegration } from '../integrations';
 import { DatabaseLoader, AppLoader } from '../loaders';
 import { PollRequestModel, UrlModel, UserModel } from '../models';
 import {
@@ -46,6 +47,8 @@ export interface Dependencies {
   cronService: CronService;
   reportService: ReportService;
   notificationService: NotificationService;
+
+  pushoverIntegration: PushoverIntegration;
 
   userRepository: UserRepository;
   urlRepository: UrlRepository;
