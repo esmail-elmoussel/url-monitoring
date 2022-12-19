@@ -14,6 +14,7 @@ import {
   AuthService,
   CronService,
   MailService,
+  NotificationService,
   OtpService,
   PollRequestService,
   ReportService,
@@ -48,6 +49,7 @@ container.register({
   pollRequestService: awilix.asClass(PollRequestService).singleton(),
   cronService: awilix.asClass(CronService).singleton(),
   reportService: awilix.asClass(ReportService).singleton(),
+  notificationService: awilix.asClass(NotificationService).singleton(),
 });
 
 container.register({

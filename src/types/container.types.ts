@@ -17,6 +17,7 @@ import {
   AuthService,
   CronService,
   MailService,
+  NotificationService,
   OtpService,
   PollRequestService,
   ReportService,
@@ -44,6 +45,7 @@ export interface Dependencies {
   pollRequestService: PollRequestService;
   cronService: CronService;
   reportService: ReportService;
+  notificationService: NotificationService;
 
   userRepository: UserRepository;
   urlRepository: UrlRepository;

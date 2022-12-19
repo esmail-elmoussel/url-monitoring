@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { baseRepositoryMock } from '../../repositories/__mocks__/base.repository.mock';
+import { UrlStatuses } from '../../types/url.types';
 import { PollRequestService } from '../poll-request.service';
-import { mailServiceMock } from '../__mocks__/mail.service.mock';
+import { notificationServiceMock } from '../__mocks__/notification.service.mock';
 
-const mailService = mailServiceMock;
+const notificationService = notificationServiceMock;
 const pollRequestRepository = { ...baseRepositoryMock };
 const urlRepository = { ...baseRepositoryMock };
 
 const pollRequestService = new PollRequestService({
   // @ts-ignore
-  mailService,
+  notificationService,
   // @ts-ignore
   pollRequestRepository,
   // @ts-ignore
@@ -108,12 +109,11 @@ describe('Poll Request Service', () => {
     await pollRequestService.create(url.id);
 
     expect(urlRepository.update).toBeCalledTimes(1);
-    expect(mailService.send).toBeCalledTimes(1);
+    expect(notificationService.send).toBeCalledTimes(1);
 
-    expect(mailService.send).toBeCalledWith(
+    expect(notificationService.send).toBeCalledWith(
       expect.objectContaining({
-        to: url.user.email,
-        subject: 'Your URL is UP again',
+        status: UrlStatuses.Up,
       })
     );
   });
@@ -126,12 +126,11 @@ describe('Poll Request Service', () => {
     await pollRequestService.create(url.id);
 
     expect(urlRepository.update).toBeCalledTimes(1);
-    expect(mailService.send).toBeCalledTimes(1);
+    expect(notificationService.send).toBeCalledTimes(1);
 
-    expect(mailService.send).toBeCalledWith(
+    expect(notificationService.send).toBeCalledWith(
       expect.objectContaining({
-        to: url.user.email,
-        subject: 'Your URL is DOWN',
+        status: UrlStatuses.Down,
       })
     );
   });
@@ -144,7 +143,7 @@ describe('Poll Request Service', () => {
     await pollRequestService.create(url.id);
 
     expect(urlRepository.update).toBeCalledTimes(1);
-    expect(mailService.send).not.toBeCalled();
+    expect(notificationService.send).not.toBeCalled();
   });
 
   it('Should create poll request record', async () => {

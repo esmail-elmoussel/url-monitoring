@@ -32,7 +32,7 @@ export class UrlService {
     const cronString = this.cronService.convertSecondsToCron(url.interval);
 
     this.cronService.create(url.id, cronString, () => {
-      console.log('RUNNING JOB FOR URL: ', 'WITH ID: ', url.id);
+      console.log('RUNNING JOB FOR URL: ', url.baseUrl, 'WITH ID: ', url.id);
       this.pollRequestService.create(url.id);
     });
   };

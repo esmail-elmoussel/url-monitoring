@@ -4,24 +4,22 @@ import { UrlStatuses } from '../types/url.types';
 import { PollRequestCreationAttributes } from '../types/poll-request.types';
 import { axios } from '../utils/axios.util';
 import { NotFoundError } from '../errors';
-import { urlStatusEmailTemplate } from '../templates';
 import { UserModel } from '../models';
-import { UserAttributes } from '../types/user.types';
 import { sequelize } from '../utils';
 
 export class PollRequestService {
   private readonly pollRequestRepository;
   private readonly urlRepository;
-  private readonly mailService;
+  private readonly notificationService;
 
   constructor({
     pollRequestRepository,
     urlRepository,
-    mailService,
+    notificationService,
   }: Dependencies) {
     this.pollRequestRepository = pollRequestRepository;
     this.urlRepository = urlRepository;
-    this.mailService = mailService;
+    this.notificationService = notificationService;
   }
 
   create = async (urlId: string) => {
@@ -70,16 +68,10 @@ export class PollRequestService {
               { where: { id: urlId }, transaction }
             );
 
-            console.log('SENDING EMAIL THAT URL IS UP...');
-
-            this.mailService.send({
-              to: (currentUrl.toJSON().user as UserAttributes).email,
-              subject: 'Your URL is UP again',
-              html: urlStatusEmailTemplate({
-                ...currentUrl.toJSON(),
-                status: UrlStatuses.Up,
-                failureCount: 0,
-              }),
+            this.notificationService.send({
+              ...currentUrl.toJSON(),
+              status: UrlStatuses.Up,
+              failureCount: 0,
             });
           }
 
@@ -108,16 +100,10 @@ export class PollRequestService {
           );
 
           if (newFailureCount === currentUrl.toJSON().threshold) {
-            console.log('SENDING EMAIL THAT URL IS DOWN...');
-
-            await this.mailService.send({
-              to: (currentUrl.toJSON().user as UserAttributes).email,
-              subject: 'Your URL is DOWN',
-              html: urlStatusEmailTemplate({
-                ...currentUrl.toJSON(),
-                status: UrlStatuses.Down,
-                failureCount: newFailureCount,
-              }),
+            this.notificationService.send({
+              ...currentUrl.toJSON(),
+              status: UrlStatuses.Down,
+              failureCount: newFailureCount,
             });
           }
 
