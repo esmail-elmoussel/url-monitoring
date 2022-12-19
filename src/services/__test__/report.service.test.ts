@@ -3,11 +3,14 @@ import { baseRepositoryMock } from '../../repositories/__mocks__/base.repository
 import { UrlStatuses } from '../../types/url.types';
 import { ReportService } from '../report.service';
 
-const urlRepository = { ...baseRepositoryMock, getReport: jest.fn() };
+const urlRepository = { ...baseRepositoryMock };
+const pollRequestRepository = { ...baseRepositoryMock, getReport: jest.fn() };
 
 const pollRequestService = new ReportService({
   // @ts-ignore
   urlRepository,
+  // @ts-ignore
+  pollRequestRepository,
 });
 
 const url = {
@@ -42,15 +45,16 @@ describe('Poll Request Service', () => {
   });
 
   it('Should get report successfully', async () => {
-    const responseTimeAverage = '288.0000000000000000';
-    const upStatusCount = '8';
-    const downStatusCount = '2';
+    const responseTimeAverage = 288;
+    const upStatusCount = 8;
+    const downStatusCount = 2;
 
     urlRepository.findOne.mockReturnValue({ toJSON: () => url });
-    urlRepository.getReport.mockReturnValue({
-      response_time_average: responseTimeAverage,
-      up_status_count: upStatusCount,
-      down_status_count: downStatusCount,
+    pollRequestRepository.getReport.mockReturnValue({
+      responseTimeAverage,
+      upStatusCount,
+      downStatusCount,
+      totalCount: upStatusCount + downStatusCount,
     });
 
     const report = await pollRequestService.get(url.id, url.userId);

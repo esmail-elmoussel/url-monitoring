@@ -6,9 +6,11 @@ import { Report } from '../types/report.types';
 
 export class ReportService {
   private readonly urlRepository;
+  private readonly pollRequestRepository;
 
-  constructor({ urlRepository }: Dependencies) {
+  constructor({ urlRepository, pollRequestRepository }: Dependencies) {
     this.urlRepository = urlRepository;
+    this.pollRequestRepository = pollRequestRepository;
   }
 
   get = async (urlId: string, userId: string) => {
@@ -26,21 +28,18 @@ export class ReportService {
       throw new NotFoundError();
     }
 
-    const result = await this.urlRepository.getReport(urlId);
-
-    const totalCount =
-      Number(result.up_status_count) + Number(result.down_status_count);
+    const result = await this.pollRequestRepository.getReport(urlId);
 
     const availabilityPercentage =
-      (Number(result.up_status_count) / totalCount) * 100;
+      (result.upStatusCount / result.totalCount) * 100;
 
     const report: Report = {
       status: url.toJSON().status,
       availability: availabilityPercentage,
-      outages: Number(result.down_status_count),
-      downtime: Number(result.down_status_count) * url.toJSON().interval,
-      uptime: Number(result.up_status_count) * url.toJSON().interval,
-      responseTime: Number(result.response_time_average),
+      outages: result.downStatusCount,
+      downtime: result.downStatusCount * url.toJSON().interval,
+      uptime: result.upStatusCount * url.toJSON().interval,
+      responseTime: result.responseTimeAverage,
       history: url.toJSON().pollRequests as PollRequestAttributes[],
     };
 

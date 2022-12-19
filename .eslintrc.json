@@ -14,7 +14,7 @@
   "rules": {
     "indent": "off",
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
+    "quotes": "off",
     "semi": ["error", "always"],
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-non-null-assertion": "off"
