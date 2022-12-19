@@ -19,7 +19,9 @@ export class NotificationService {
 
     this.mailService.send({
       to: (url.user as UserAttributes).email,
-      subject: 'Your URL is UP again',
+      subject: `Your URL is ${
+        url.status === UrlStatuses.Up ? 'UP again' : 'DOWN'
+      }`,
       html: urlStatusEmailTemplate(url),
     });
 

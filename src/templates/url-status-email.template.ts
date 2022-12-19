@@ -338,7 +338,9 @@ export const urlStatusEmailTemplate = (url: UrlAttributes) => `<!DOCTYPE html>
 
                         <p>ID: ${url.id}</p>
                         <p>Name: ${url.name}</p>
-                        <p>Base URL: ${url.baseUrl}</p>
+                        <p>Base URL: ${url.baseUrl}${
+  url.path ? url.path : ''
+}</p>
                         <p>Failure Count: ${url.failureCount}</p>
                         <p>Date: ${url.updatedAt}</p>
 
