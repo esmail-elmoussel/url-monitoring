@@ -8,6 +8,7 @@ import {
   UrlCreationDto,
   UrlStatuses,
 } from '../types/url.types';
+import { sequelize } from '../utils';
 
 export class UrlService {
   private readonly urlRepository;
@@ -31,7 +32,7 @@ export class UrlService {
     const cronString = this.cronService.convertSecondsToCron(url.interval);
 
     this.cronService.create(url.id, cronString, () => {
-      console.log('RUNNING JOB FOR URL: ', url.baseUrl, 'WITH ID: ', url.id);
+      console.log('RUNNING JOB FOR URL: ', 'WITH ID: ', url.id);
       this.pollRequestService.create(url.id);
     });
   };
@@ -100,11 +101,24 @@ export class UrlService {
       throw new NotFoundError();
     }
 
-    this.cronService.cancel(existingUrl.toJSON().id);
+    const transaction = await sequelize.transaction();
 
-    await this.pollRequestRepository.delete({ where: { urlId } });
+    try {
+      this.cronService.cancel(existingUrl.toJSON().id);
 
-    await this.urlRepository.delete({ where: { id: urlId } });
+      await this.pollRequestRepository.delete({
+        where: { urlId },
+        transaction,
+      });
+
+      await this.urlRepository.delete({ where: { id: urlId }, transaction });
+
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+
+      throw error;
+    }
   };
 
   findUserUrls = async (userId: string) => {

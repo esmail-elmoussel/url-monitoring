@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Dependencies } from '../types/container.types';
 import { UrlStatuses } from '../types/url.types';
 import { PollRequestCreationAttributes } from '../types/poll-request.types';
@@ -6,6 +7,7 @@ import { NotFoundError } from '../errors';
 import { urlStatusEmailTemplate } from '../templates';
 import { UserModel } from '../models';
 import { UserAttributes } from '../types/user.types';
+import { sequelize } from '../utils';
 
 export class PollRequestService {
   private readonly pollRequestRepository;
@@ -37,85 +39,103 @@ export class PollRequestService {
       throw new NotFoundError();
     }
 
-    const newPollRequest: PollRequestCreationAttributes = await axios
-      .get(currentUrl.toJSON().baseUrl, {
-        timeout: currentUrl.toJSON().timeout * 1000,
-      })
-      .then(async (response) => {
-        /**
-         * - if old status = down
-         *    1. update status to up
-         *    2. update failureCount to be 0
-         *    3. send an email that url is up again
-         */
+    const transaction = await sequelize.transaction();
 
-        if (currentUrl.toJSON().status === UrlStatuses.Down) {
+    const urlPath = currentUrl.toJSON().path
+      ? currentUrl.toJSON().baseUrl + currentUrl.toJSON().path
+      : currentUrl.toJSON().baseUrl;
+
+    try {
+      const newPollRequest: PollRequestCreationAttributes = await axios
+        .get(urlPath, {
+          timeout: currentUrl.toJSON().timeout * 1000,
+        })
+        .then(async (response) => {
+          /**
+           * - if old status = down
+           *    1. update status to up
+           *    2. update failureCount to be 0
+           *    3. send an email that url is up again
+           */
+
+          if (currentUrl.toJSON().status === UrlStatuses.Down) {
+            await this.urlRepository.update(
+              { status: UrlStatuses.Up, failureCount: 0 },
+              { where: { id: urlId }, transaction }
+            );
+
+            console.log('SENDING EMAIL THAT URL IS UP...');
+
+            this.mailService.send({
+              to: (currentUrl.toJSON().user as UserAttributes).email,
+              subject: 'Your URL is UP again',
+              html: urlStatusEmailTemplate({
+                ...currentUrl.toJSON(),
+                status: UrlStatuses.Up,
+                failureCount: 0,
+              }),
+            });
+          }
+
+          // @ts-ignore
+          const responseTime = response.duration;
+
+          return {
+            urlId,
+            status: UrlStatuses.Up,
+            responseTime,
+          };
+        })
+        .catch(async (error) => {
+          /**
+           * 1. update status to down
+           * 2. update failureCount to failureCount + 1
+           * - if new failureCount === threshold
+           *   1. send an email that url is down
+           */
+
+          const newFailureCount = currentUrl.toJSON().failureCount + 1;
+
           await this.urlRepository.update(
-            { status: UrlStatuses.Up, failureCount: 0 },
-            { where: { id: urlId } }
+            { status: UrlStatuses.Down, failureCount: newFailureCount },
+            { where: { id: urlId }, transaction }
           );
 
-          console.log('SENDING EMAIL THAT URL IS UP...');
+          if (newFailureCount === currentUrl.toJSON().threshold) {
+            console.log('SENDING EMAIL THAT URL IS DOWN...');
 
-          this.mailService.send({
-            to: (currentUrl.toJSON().user as UserAttributes).email,
-            subject: 'Your URL is UP again',
-            html: urlStatusEmailTemplate({
-              ...currentUrl.toJSON(),
-              status: UrlStatuses.Up,
-              failureCount: 0,
-            }),
-          });
-        }
+            await this.mailService.send({
+              to: (currentUrl.toJSON().user as UserAttributes).email,
+              subject: 'Your URL is DOWN',
+              html: urlStatusEmailTemplate({
+                ...currentUrl.toJSON(),
+                status: UrlStatuses.Down,
+                failureCount: newFailureCount,
+              }),
+            });
+          }
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const responseTime = response.duration;
+          const responseTime = error.duration;
 
-        return {
-          urlId,
-          status: UrlStatuses.Up,
-          responseTime,
-        };
-      })
-      .catch(async (error) => {
-        /**
-         * 1. update status to down
-         * 2. update failureCount to failureCount + 1
-         * - if new failureCount === threshold
-         *   1. send an email that url is down
-         */
+          return {
+            urlId,
+            status: UrlStatuses.Down,
+            responseTime,
+          };
+        });
 
-        const newFailureCount = currentUrl.toJSON().failureCount + 1;
+      const pollRequest = await this.pollRequestRepository.create(
+        newPollRequest,
+        { transaction }
+      );
 
-        await this.urlRepository.update(
-          { status: UrlStatuses.Down, failureCount: newFailureCount },
-          { where: { id: urlId } }
-        );
+      await transaction.commit();
 
-        if (newFailureCount === currentUrl.toJSON().threshold) {
-          console.log('SENDING EMAIL THAT URL IS DOWN...');
+      return pollRequest;
+    } catch (error) {
+      await transaction.rollback();
 
-          await this.mailService.send({
-            to: (currentUrl.toJSON().user as UserAttributes).email,
-            subject: 'Your URL is DOWN',
-            html: urlStatusEmailTemplate({
-              ...currentUrl.toJSON(),
-              status: UrlStatuses.Down,
-              failureCount: newFailureCount,
-            }),
-          });
-        }
-
-        const responseTime = error.duration;
-
-        return {
-          urlId,
-          status: UrlStatuses.Down,
-          responseTime,
-        };
-      });
-
-    return await this.pollRequestRepository.create(newPollRequest);
+      throw error;
+    }
   };
 }

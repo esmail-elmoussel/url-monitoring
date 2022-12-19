@@ -31,6 +31,7 @@ if (!process.env.JWT_SECRET) {
 }
 
 export const config = {
+  NODE_ENV: process.env.PORT,
   PORT: process.env.PORT,
   DATABASE_URL: process.env.DATABASE_URL,
   EMAIL: process.env.EMAIL,

@@ -38,7 +38,6 @@ export function urlRoutes({ urlController }: Dependencies) {
       schema: urlDto.params,
       source: 'params',
     }),
-
     urlController.delete
   );
 
