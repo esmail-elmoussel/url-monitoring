@@ -1,5 +1,4 @@
 import { NotFoundError } from '../errors';
-import { UrlModel } from '../models';
 import { Dependencies } from '../types/container.types';
 import {
   Protocols,
@@ -52,9 +51,9 @@ export class UrlService {
 
     const createdUrl = await this.urlRepository.create(urlToBeCreated);
 
-    const urlId = createdUrl.toJSON().id;
+    const urlId = createdUrl.id;
 
-    this.runPollRequestCronJob(createdUrl.toJSON());
+    this.runPollRequestCronJob(createdUrl);
 
     await this.pollRequestService.create(urlId);
 
@@ -86,9 +85,11 @@ export class UrlService {
 
     this.cronService.cancel(urlId);
 
-    const updatedUrl = (await this.urlRepository.findById(urlId)) as UrlModel;
+    const updatedUrl = (await this.urlRepository.findById(
+      urlId
+    )) as UrlAttributes;
 
-    this.runPollRequestCronJob(updatedUrl.toJSON());
+    this.runPollRequestCronJob(updatedUrl);
   };
 
   delete = async ({ urlId, userId }: { urlId: string; userId: string }) => {
@@ -103,7 +104,7 @@ export class UrlService {
     const transaction = await sequelize.transaction();
 
     try {
-      this.cronService.cancel(existingUrl.toJSON().id);
+      this.cronService.cancel(existingUrl.id);
 
       await this.pollRequestRepository.delete({
         where: { urlId },
@@ -132,7 +133,7 @@ export class UrlService {
     const urls = await this.urlRepository.find({});
 
     urls.map((url) => {
-      this.runPollRequestCronJob(url.toJSON());
+      this.runPollRequestCronJob(url);
     });
   };
 }

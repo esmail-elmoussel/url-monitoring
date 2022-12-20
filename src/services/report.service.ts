@@ -34,13 +34,13 @@ export class ReportService {
       (result.upStatusCount / result.totalCount) * 100;
 
     const report: Report = {
-      status: url.toJSON().status,
+      status: url.status,
       availability: availabilityPercentage,
       outages: result.downStatusCount,
-      downtime: result.downStatusCount * url.toJSON().interval,
-      uptime: result.upStatusCount * url.toJSON().interval,
+      downtime: result.downStatusCount * url.interval,
+      uptime: result.upStatusCount * url.interval,
       responseTime: result.responseTimeAverage,
-      history: url.toJSON().pollRequests as PollRequestAttributes[],
+      history: url.pollRequests as PollRequestAttributes[],
     };
 
     return report;

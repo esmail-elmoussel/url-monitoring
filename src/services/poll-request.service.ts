@@ -39,12 +39,12 @@ export class PollRequestService {
 
     const transaction = await sequelize.transaction();
 
-    const urlPath = currentUrl.toJSON().path
-      ? currentUrl.toJSON().baseUrl + currentUrl.toJSON().path
-      : currentUrl.toJSON().baseUrl;
+    const urlPath = currentUrl.path
+      ? currentUrl.baseUrl + currentUrl.path
+      : currentUrl.baseUrl;
 
-    const authenticationHeader = currentUrl.toJSON().authentication || {};
-    const requestHeaders = currentUrl.toJSON().httpHeaders || {};
+    const authenticationHeader = currentUrl.authentication || {};
+    const requestHeaders = currentUrl.httpHeaders || {};
 
     const headers = { ...authenticationHeader, ...requestHeaders };
 
@@ -52,7 +52,7 @@ export class PollRequestService {
       const newPollRequest: PollRequestCreationAttributes = await axios
         .get(urlPath, {
           headers,
-          timeout: currentUrl.toJSON().timeout * 1000,
+          timeout: currentUrl.timeout * 1000,
         })
         .then(async (response) => {
           /**
@@ -62,14 +62,14 @@ export class PollRequestService {
            *    3. send an email that url is up again
            */
 
-          if (currentUrl.toJSON().status === UrlStatuses.Down) {
+          if (currentUrl.status === UrlStatuses.Down) {
             await this.urlRepository.update(
               { status: UrlStatuses.Up, failureCount: 0 },
               { where: { id: urlId }, transaction }
             );
 
             this.notificationService.send({
-              ...currentUrl.toJSON(),
+              ...currentUrl,
               status: UrlStatuses.Up,
               failureCount: 0,
             });
@@ -92,16 +92,16 @@ export class PollRequestService {
            *   1. send an email that url is down
            */
 
-          const newFailureCount = currentUrl.toJSON().failureCount + 1;
+          const newFailureCount = currentUrl.failureCount + 1;
 
           await this.urlRepository.update(
             { status: UrlStatuses.Down, failureCount: newFailureCount },
             { where: { id: urlId }, transaction }
           );
 
-          if (newFailureCount === currentUrl.toJSON().threshold) {
+          if (newFailureCount === currentUrl.threshold) {
             this.notificationService.send({
-              ...currentUrl.toJSON(),
+              ...currentUrl,
               status: UrlStatuses.Down,
               failureCount: newFailureCount,
             });

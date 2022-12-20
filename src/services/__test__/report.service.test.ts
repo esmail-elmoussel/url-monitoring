@@ -49,7 +49,7 @@ describe('Poll Request Service', () => {
     const upStatusCount = 8;
     const downStatusCount = 2;
 
-    urlRepository.findOne.mockReturnValue({ toJSON: () => url });
+    urlRepository.findOne.mockReturnValue(url);
     pollRequestRepository.getReport.mockReturnValue({
       responseTimeAverage,
       upStatusCount,

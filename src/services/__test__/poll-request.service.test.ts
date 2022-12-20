@@ -57,7 +57,7 @@ describe('Poll Request Service', () => {
   });
 
   it('Should not update url due to status was up and stayed as up', async () => {
-    urlRepository.findById.mockReturnValue({ toJSON: () => url });
+    urlRepository.findById.mockReturnValue(url);
 
     await pollRequestService.create(url.id);
 
@@ -65,21 +65,16 @@ describe('Poll Request Service', () => {
   });
 
   it('Should update url due to status was down and became up', async () => {
-    urlRepository.findById.mockReturnValue({
-      toJSON: () => ({ ...url, status: 'down' }),
-    });
-
-    await pollRequestService.create(url.id);
+    urlRepository.findById.mockReturnValue({ ...url, status: 'down' }),
+      await pollRequestService.create(url.id);
 
     expect(urlRepository.update).toBeCalledTimes(1);
   });
 
   it('Should update url due to status was up and became down', async () => {
     urlRepository.findById.mockReturnValue({
-      toJSON: () => ({
-        ...url,
-        baseUrl: brokenUrl,
-      }),
+      ...url,
+      baseUrl: brokenUrl,
     });
 
     await pollRequestService.create(url.id);
@@ -89,11 +84,9 @@ describe('Poll Request Service', () => {
 
   it('Should update url when status was down and stayed down to update failureCount', async () => {
     urlRepository.findById.mockReturnValue({
-      toJSON: () => ({
-        ...url,
-        status: 'down',
-        baseUrl: brokenUrl,
-      }),
+      ...url,
+      status: 'down',
+      baseUrl: brokenUrl,
     });
 
     await pollRequestService.create(url.id);
@@ -103,10 +96,10 @@ describe('Poll Request Service', () => {
 
   it('Should send email that status is up again', async () => {
     urlRepository.findById.mockReturnValue({
-      toJSON: () => ({ ...url, status: 'down' }),
-    });
-
-    await pollRequestService.create(url.id);
+      ...url,
+      status: 'down',
+    }),
+      await pollRequestService.create(url.id);
 
     expect(urlRepository.update).toBeCalledTimes(1);
     expect(notificationService.send).toBeCalledTimes(1);
@@ -120,7 +113,8 @@ describe('Poll Request Service', () => {
 
   it('Should send email that status is down', async () => {
     urlRepository.findById.mockReturnValue({
-      toJSON: () => ({ ...url, baseUrl: brokenUrl }),
+      ...url,
+      baseUrl: brokenUrl,
     });
 
     await pollRequestService.create(url.id);
@@ -137,19 +131,18 @@ describe('Poll Request Service', () => {
 
   it('Should not send email although of url is down due to threshold', async () => {
     urlRepository.findById.mockReturnValue({
-      toJSON: () => ({ ...url, baseUrl: brokenUrl, threshold: 2 }),
-    });
-
-    await pollRequestService.create(url.id);
+      ...url,
+      baseUrl: brokenUrl,
+      threshold: 2,
+    }),
+      await pollRequestService.create(url.id);
 
     expect(urlRepository.update).toBeCalledTimes(1);
     expect(notificationService.send).not.toBeCalled();
   });
 
   it('Should create poll request record', async () => {
-    urlRepository.findById.mockReturnValue({
-      toJSON: () => url,
-    });
+    urlRepository.findById.mockReturnValue(url);
 
     await pollRequestService.create(url.id);
 

@@ -41,7 +41,7 @@ export class AuthController {
 
     const user = await this.service.findOrCreateUser(email, pushoverId);
 
-    const token = jwt.sign({ id: user.toJSON().id }, config.JWT_SECRET);
+    const token = jwt.sign({ id: user.id }, config.JWT_SECRET);
 
     return res.json({ user, token });
   };

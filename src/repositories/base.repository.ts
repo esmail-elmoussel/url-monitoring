@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import sequelize from 'sequelize';
 
 abstract class BaseRepository<M extends sequelize.Model, ModelAttributes> {
@@ -10,8 +11,9 @@ abstract class BaseRepository<M extends sequelize.Model, ModelAttributes> {
   create(
     entity: sequelize.Utils.MakeNullishOptional<M['_creationAttributes']>,
     options?: sequelize.CreateOptions<sequelize.Attributes<M>>
-  ) {
-    return this.model.create(entity, options);
+  ): Promise<ModelAttributes> {
+    // @ts-ignore
+    return this.model.create(entity, { raw: true, nest: true, ...options });
   }
 
   findById(
@@ -20,16 +22,23 @@ abstract class BaseRepository<M extends sequelize.Model, ModelAttributes> {
       sequelize.NonNullFindOptions<sequelize.Attributes<M>>,
       'where'
     >
-  ) {
-    return this.model.findByPk(id, options);
+  ): Promise<ModelAttributes | null> {
+    // @ts-ignore
+    return this.model.findByPk(id, { raw: true, nest: true, ...options });
   }
 
-  findOne(options: sequelize.FindOptions<sequelize.Attributes<M>>) {
-    return this.model.findOne(options);
+  findOne(
+    options: sequelize.FindOptions<sequelize.Attributes<M>>
+  ): Promise<ModelAttributes | null> {
+    // @ts-ignore
+    return this.model.findOne({ raw: true, nest: true, ...options });
   }
 
-  find(options: sequelize.FindOptions<sequelize.Attributes<M>>) {
-    return this.model.findAll(options);
+  find(
+    options: sequelize.FindOptions<sequelize.Attributes<M>>
+  ): Promise<ModelAttributes[]> {
+    // @ts-ignore
+    return this.model.findAll({ raw: true, nest: true, ...options });
   }
 
   update(
