@@ -5,16 +5,6 @@ const cronService = new CronService();
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 describe('Cron Service', () => {
-  it('Should call cron function', async () => {
-    const cronFunction = jest.fn();
-
-    cronService.create('someKey', '* * * * * *', cronFunction);
-
-    await sleep(1000);
-
-    expect(cronFunction).toBeCalled();
-  });
-
   it('Should cancel cron', async () => {
     const cronFunction = jest.fn();
 

@@ -15,6 +15,8 @@ jest.mock('nodemailer', () => {
   };
 });
 
+jest.mock('cron');
+
 beforeAll(async () => {
   await databaseLoader.connect();
 });
