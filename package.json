@@ -4,12 +4,13 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev --poll src/index.ts",
+    "build": "tsc",
     "prettier": "prettier --write .",
     "lint": "eslint .",
+    "start": "ts-node-dev --poll src/index.ts",
+    "start:prod": "node build/index.js",
     "test": "NODE_ENV='test' jest --watchAll --no-cache",
-    "build": "tsc",
-    "start:prod": "node build/index.js"
+    "test:ci": "NODE_ENV='test' jest"
   },
   "dependencies": {
     "awilix": "^8.0.0",
