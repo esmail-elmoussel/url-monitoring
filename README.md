@@ -25,3 +25,7 @@ docker-compose up
 ## API Documentation
 
 [Postman](https://www.postman.com/) collection can be found [here](https://api.postman.com/collections/20984540-357604f2-8f99-4864-bf0e-7b31ce8236ec?access_key=PMAT-01GMN7TPZPW6PEQ320RAYDTJ9S)
+
+
+## Database Schema Design
+<img width="1507" alt="Screenshot 2023-03-30 at 6 04 25 PM" src="https://user-images.githubusercontent.com/60473694/228896820-f62efe39-1690-4b91-92f1-8abbce1fdae9.png">
